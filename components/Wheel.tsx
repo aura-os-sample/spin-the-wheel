@@ -173,7 +173,7 @@ const Wheel: React.FC<WheelProps> = ({ isSpinning, onSpinComplete, targetOutcome
       {/* Center Cap */}
       <div className="absolute top-1/2 left-1/2 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-slate-100 to-slate-300 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-lg flex items-center justify-center z-20 border border-slate-300">
         <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-inner">
-          LOGO
+          LUCK
         </div>
       </div>
     </div>

@@ -11,21 +11,21 @@ export const OUTCOME_CONFIGS: Record<string, OutcomeConfig> = {
   },
   '301': {
     id: '301',
-    label: '301 Moved',
+    label: '301 Go to Counter',
     color: '#f59e0b', // Amber
     probability: 0.25,
     maxLimit: 25,
   },
   '302': {
     id: '302',
-    label: '302 Found',
+    label: '302 Go to Another Place',
     color: '#eab308', // Yellow
     probability: 0.25,
     maxLimit: 25,
   },
   '404': {
     id: '404',
-    label: '404 Error',
+    label: '404 Better Luck Next Time',
     color: '#ef4444', // Red
     probability: 0.10,
     maxLimit: 20, // Set reasonable limit for "???"

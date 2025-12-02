@@ -102,8 +102,8 @@ const HomePage: React.FC = () => {
               <Hexagon size={32} fill="currentColor" className="text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none">StatusWheel</h1>
-              <p className="text-sm font-bold text-indigo-500 tracking-widest uppercase mt-1">System Response Generator</p>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none">Spin the Wheel</h1>
+              <p className="text-sm font-bold text-indigo-500 tracking-widest uppercase mt-1">Try your luck!</p>
             </div>
           </div>
 
@@ -142,7 +142,7 @@ const HomePage: React.FC = () => {
 
           {/* Footer Info (Desktop) */}
           <div className="hidden md:block absolute bottom-8 right-8 text-right">
-            <p className="text-xs text-slate-400 font-medium">&copy; {new Date().getFullYear()} Status Code Wheel</p>
+            <p className="text-xs text-slate-400 font-medium">&copy; {new Date().getFullYear()} Harsh Verma</p>
           </div>
 
         </div>

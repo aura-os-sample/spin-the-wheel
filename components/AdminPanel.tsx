@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from 'recharts';
 import { clearHistory, getHistory, getCounts } from '../services/storageService';
 import { getConfig, saveConfig, resetConfig } from '../services/configService';
+import { OUTCOME_CONFIGS as DEFAULTS } from '../constants';
 import { SpinRecord, OutcomeConfig } from '../types';
 import { Trash2, RefreshCw, BarChart2, Table, Settings, Save, RotateCcw } from 'lucide-react';
 
@@ -41,7 +42,18 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleSaveConfig = () => {
-    saveConfig(editConfig);
+    // Only persist editable fields (probability & maxLimit). Merge with defaults to keep labels/colors in code stable.
+    const toSave: Record<string, OutcomeConfig> = {};
+    Object.keys(editConfig).forEach((k) => {
+      const base = DEFAULTS[k] || editConfig[k];
+      toSave[k] = {
+        ...base,
+        probability: editConfig[k].probability,
+        maxLimit: editConfig[k].maxLimit,
+      } as OutcomeConfig;
+    });
+
+    saveConfig(toSave);
     setIsEditing(false);
     refreshData();
   };
