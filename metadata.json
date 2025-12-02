@@ -1,0 +1,5 @@
+{
+  "name": "Spin Wheel",
+  "description": "A provably fair spin-the-wheel application with strict probability enforcement and administrative dashboard.",
+  "requestFramePermissions": []
+}
