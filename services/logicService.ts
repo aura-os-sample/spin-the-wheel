@@ -26,7 +26,7 @@ export const determineOutcome = (): OutcomeId | null => {
 
   // 2. Generate random number within the normalized range
   const random = Math.random() * totalProbabilityWeight;
-  
+
   // 3. Select winner based on cumulative weight
   let accumulatedWeight = 0;
   for (const outcomeId of candidates) {

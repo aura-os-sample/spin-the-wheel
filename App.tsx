@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
     };
     window.addEventListener('configUpdated', handleConfigUpdate);
     window.addEventListener('storage', handleConfigUpdate);
-    
+
     return () => {
       window.removeEventListener('configUpdated', handleConfigUpdate);
       window.removeEventListener('storage', handleConfigUpdate);
@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
 
   const handleSpin = useCallback(() => {
     if (isSpinning) return;
-    
+
     setShowPopup(false);
     setError(null);
 
@@ -73,20 +73,20 @@ const HomePage: React.FC = () => {
     <div className="h-screen w-screen overflow-hidden bg-slate-50 flex items-center justify-center relative">
       {/* Decorative Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-blue-100 -z-10" />
-      <div className="absolute inset-0 opacity-30 pointer-events-none" 
-        style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
+      <div className="absolute inset-0 opacity-30 pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '32px 32px' }}
       />
 
       <div className="w-full max-w-7xl px-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 items-center h-full max-h-[900px]">
-        
+
         {/* Left Column: The Wheel */}
         <div className="relative flex justify-center items-center h-full py-8 md:py-0 order-2 md:order-1">
           <div className="relative z-10 scale-90 md:scale-100">
-            <Wheel 
+            <Wheel
               key={refreshKey}
-              isSpinning={isSpinning} 
-              targetOutcome={outcome} 
-              onSpinComplete={onSpinComplete} 
+              isSpinning={isSpinning}
+              targetOutcome={outcome}
+              onSpinComplete={onSpinComplete}
             />
           </div>
           {/* Floor Shadow */}
@@ -95,23 +95,23 @@ const HomePage: React.FC = () => {
 
         {/* Right Column: Controls & Branding */}
         <div className="flex flex-col items-center md:items-start justify-center space-y-8 md:pl-12 order-1 md:order-2">
-          
+
           {/* Brand */}
           <div className="flex items-center gap-4">
-             <div className="w-14 h-14 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-xl rotate-3">
-               <Hexagon size={32} fill="currentColor" className="text-white" />
-             </div>
-             <div>
-               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none">StatusWheel</h1>
-               <p className="text-sm font-bold text-indigo-500 tracking-widest uppercase mt-1">System Response Generator</p>
-             </div>
+            <div className="w-14 h-14 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-xl rotate-3">
+              <Hexagon size={32} fill="currentColor" className="text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none">StatusWheel</h1>
+              <p className="text-sm font-bold text-indigo-500 tracking-widest uppercase mt-1">System Response Generator</p>
+            </div>
           </div>
 
           <div className="w-full h-px bg-slate-200/80 max-w-xs" />
 
           {/* Action Area */}
           <div className="flex flex-col gap-6 w-full max-w-xs items-center md:items-start">
-             {error && (
+            {error && (
               <div className="w-full bg-red-50 text-red-600 px-4 py-3 rounded-lg flex items-start gap-3 text-sm border border-red-100 shadow-sm animate-pulse">
                 <AlertCircle size={18} className="mt-0.5 shrink-0" />
                 <span className="font-medium">{error}</span>
@@ -123,8 +123,8 @@ const HomePage: React.FC = () => {
               disabled={isSpinning}
               className={`
                 group relative w-full py-5 rounded-2xl font-black text-xl uppercase tracking-wider shadow-xl transition-all transform
-                ${isSpinning 
-                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed scale-[0.98]' 
+                ${isSpinning
+                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed scale-[0.98]'
                   : 'bg-indigo-600 text-white hover:bg-indigo-500 hover:shadow-indigo-500/40 hover:-translate-y-1 active:translate-y-0.5 border-b-4 border-indigo-800 hover:border-indigo-700'
                 }
               `}
@@ -133,22 +133,22 @@ const HomePage: React.FC = () => {
                 {isSpinning ? 'Spinning...' : 'Spin Now'}
               </span>
             </button>
-            
+
             <p className="text-sm text-slate-400 font-medium flex items-center gap-2">
-              <span className="bg-white px-2 py-1 rounded border border-slate-200 text-slate-500 font-mono text-xs shadow-sm">SPACE</span> 
+              <span className="bg-white px-2 py-1 rounded border border-slate-200 text-slate-500 font-mono text-xs shadow-sm">SPACE</span>
               to spin
             </p>
           </div>
 
           {/* Footer Info (Desktop) */}
           <div className="hidden md:block absolute bottom-8 right-8 text-right">
-             <p className="text-xs text-slate-400 font-medium">&copy; {new Date().getFullYear()} Status Code Wheel</p>
+            <p className="text-xs text-slate-400 font-medium">&copy; {new Date().getFullYear()} Status Code Wheel</p>
           </div>
 
         </div>
       </div>
 
-      <ResultPopup 
+      <ResultPopup
         isVisible={showPopup}
         outcomeConfig={outcome ? config[outcome] : null}
         onClose={() => setShowPopup(false)}
