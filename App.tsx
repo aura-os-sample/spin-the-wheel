@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Wheel from './components/Wheel';
 import AdminPanel from './components/AdminPanel';
 import ResultPopup from './components/ResultPopup';
@@ -160,12 +160,12 @@ const HomePage: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
