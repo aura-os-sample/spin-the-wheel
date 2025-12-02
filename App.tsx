@@ -16,16 +16,14 @@ const HomePage: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [config, setConfig] = useState<Record<string, OutcomeConfig>>(getConfig());
-  const [refreshKey, setRefreshKey] = useState(0); // Used to force re-render wheel if config changes
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Listener for config changes from Admin Panel (if in same window context/localStorage event)
   useEffect(() => {
     const handleConfigUpdate = () => {
       setConfig(getConfig());
       setRefreshKey(p => p + 1);
     };
     window.addEventListener('configUpdated', handleConfigUpdate);
-    // Also listen to storage events if admin is in another tab
     window.addEventListener('storage', handleConfigUpdate);
     
     return () => {
@@ -37,19 +35,16 @@ const HomePage: React.FC = () => {
   const handleSpin = useCallback(() => {
     if (isSpinning) return;
     
-    // Reset previous state
     setShowPopup(false);
     setError(null);
 
-    // 1. Determine Logic
     const result = determineOutcome();
 
     if (!result) {
-      setError("Maximum limits reached for all outcomes! Please contact admin to reset.");
+      setError("Limits reached! Please reset in Admin.");
       return;
     }
 
-    // 2. Start Visuals
     setOutcome(result);
     setIsSpinning(true);
   }, [isSpinning]);
@@ -63,11 +58,10 @@ const HomePage: React.FC = () => {
     }
   };
 
-  // Keyboard support (Spacebar)
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === 'Space' && !isSpinning && !showPopup) {
-        event.preventDefault(); // Prevent scrolling
+        event.preventDefault();
         handleSpin();
       }
     };
@@ -76,87 +70,90 @@ const HomePage: React.FC = () => {
   }, [handleSpin, isSpinning, showPopup]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="h-screen w-screen overflow-hidden bg-slate-50 flex items-center justify-center relative">
       {/* Decorative Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-blue-100 -z-10" />
-      <div className="absolute top-0 left-0 w-full h-full opacity-30 pointer-events-none" 
-        style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+      <div className="absolute inset-0 opacity-30 pointer-events-none" 
+        style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
       />
 
-      {/* Header with Logo */}
-      <header className="absolute top-6 left-0 w-full flex justify-center">
-        <div className="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100">
-            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-md">
-              <Hexagon size={24} fill="currentColor" className="text-white" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-slate-800 leading-tight">StatusWheel</span>
-              <span className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Spin & Win</span>
-            </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex flex-col items-center gap-10 w-full max-w-md mt-12">
+      <div className="w-full max-w-7xl px-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 items-center h-full max-h-[900px]">
         
-        {/* Error Display */}
-        <div className="h-8 flex items-center justify-center w-full">
-           {error && (
-            <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm border border-red-200 animate-pulse">
-              <AlertCircle size={18} />
-              {error}
-            </div>
-          )}
-        </div>
-
-        {/* The Wheel */}
-        <div className="relative">
-          <Wheel 
-            key={refreshKey} // Force re-render on config change
-            isSpinning={isSpinning} 
-            targetOutcome={outcome} 
-            onSpinComplete={onSpinComplete} 
-          />
-          
+        {/* Left Column: The Wheel */}
+        <div className="relative flex justify-center items-center h-full py-8 md:py-0 order-2 md:order-1">
+          <div className="relative z-10 scale-90 md:scale-100">
+            <Wheel 
+              key={refreshKey}
+              isSpinning={isSpinning} 
+              targetOutcome={outcome} 
+              onSpinComplete={onSpinComplete} 
+            />
+          </div>
           {/* Floor Shadow */}
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 h-4 bg-black/10 rounded-[100%] blur-sm" />
+          <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-64 h-8 bg-black/10 rounded-[100%] blur-md -z-0 md:bottom-auto md:top-[85%]" />
         </div>
 
-        {/* Controls */}
-        <div className="flex flex-col items-center gap-4 w-full">
-          <button
-            onClick={handleSpin}
-            disabled={isSpinning}
-            className={`
-              w-full max-w-xs py-4 px-8 rounded-xl font-bold text-lg uppercase tracking-wider shadow-lg transition-all transform active:scale-95
-              ${isSpinning 
-                ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
-                : 'bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-indigo-500/30 border-b-4 border-indigo-800'
-              }
-            `}
-          >
-            {isSpinning ? 'Spinning...' : 'Spin Now'}
-          </button>
+        {/* Right Column: Controls & Branding */}
+        <div className="flex flex-col items-center md:items-start justify-center space-y-8 md:pl-12 order-1 md:order-2">
           
-          <p className="text-xs text-slate-400 font-medium">
-            Press <span className="bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-500 font-mono">Space</span> to spin
-          </p>
+          {/* Brand */}
+          <div className="flex items-center gap-4">
+             <div className="w-14 h-14 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-xl rotate-3">
+               <Hexagon size={32} fill="currentColor" className="text-white" />
+             </div>
+             <div>
+               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none">StatusWheel</h1>
+               <p className="text-sm font-bold text-indigo-500 tracking-widest uppercase mt-1">System Response Generator</p>
+             </div>
+          </div>
+
+          <div className="w-full h-px bg-slate-200/80 max-w-xs" />
+
+          {/* Action Area */}
+          <div className="flex flex-col gap-6 w-full max-w-xs items-center md:items-start">
+             {error && (
+              <div className="w-full bg-red-50 text-red-600 px-4 py-3 rounded-lg flex items-start gap-3 text-sm border border-red-100 shadow-sm animate-pulse">
+                <AlertCircle size={18} className="mt-0.5 shrink-0" />
+                <span className="font-medium">{error}</span>
+              </div>
+            )}
+
+            <button
+              onClick={handleSpin}
+              disabled={isSpinning}
+              className={`
+                group relative w-full py-5 rounded-2xl font-black text-xl uppercase tracking-wider shadow-xl transition-all transform
+                ${isSpinning 
+                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed scale-[0.98]' 
+                  : 'bg-indigo-600 text-white hover:bg-indigo-500 hover:shadow-indigo-500/40 hover:-translate-y-1 active:translate-y-0.5 border-b-4 border-indigo-800 hover:border-indigo-700'
+                }
+              `}
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                {isSpinning ? 'Spinning...' : 'Spin Now'}
+              </span>
+            </button>
+            
+            <p className="text-sm text-slate-400 font-medium flex items-center gap-2">
+              <span className="bg-white px-2 py-1 rounded border border-slate-200 text-slate-500 font-mono text-xs shadow-sm">SPACE</span> 
+              to spin
+            </p>
+          </div>
+
+          {/* Footer Info (Desktop) */}
+          <div className="hidden md:block absolute bottom-8 right-8 text-right">
+             <p className="text-xs text-slate-400 font-medium">&copy; {new Date().getFullYear()} Status Code Wheel</p>
+          </div>
+
         </div>
+      </div>
 
-      </main>
-
-      {/* Result Popup */}
       <ResultPopup 
         isVisible={showPopup}
         outcomeConfig={outcome ? config[outcome] : null}
         onClose={() => setShowPopup(false)}
         autoHideDuration={4000}
       />
-
-      {/* Footer */}
-      <footer className="absolute bottom-4 text-slate-400 text-xs text-center">
-        <p>&copy; {new Date().getFullYear()} Status Code Wheel. All rights reserved.</p>
-      </footer>
     </div>
   );
 };
