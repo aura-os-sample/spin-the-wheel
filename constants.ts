@@ -5,28 +5,28 @@ export const OUTCOME_CONFIGS: Record<string, OutcomeConfig> = {
   '200': {
     id: '200',
     label: '200 OK',
-    color: '#22c55e', // Green
+    color: '#0F2854', // Green
     probability: 0.40,
     maxLimit: 50,
   },
   '301': {
     id: '301',
     label: '301 Go to Counter',
-    color: '#f59e0b', // Amber
+    color: '#1C4D8D', // Amber
     probability: 0.25,
     maxLimit: 25,
   },
   '302': {
     id: '302',
     label: '302 Go to Another Place',
-    color: '#eab308', // Yellow
+    color: '#4988C4', // Yellow
     probability: 0.25,
     maxLimit: 25,
   },
   '404': {
     id: '404',
     label: '404 Better Luck Next Time',
-    color: '#ef4444', // Red
+    color: '#BDE8F5', // Red
     probability: 0.10,
     maxLimit: 20, // Set reasonable limit for "???"
   },
